@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chewbain - Quality Time Redefined</title>
+  <meta name="description" content="Chewbain adalah kit aktivitas premium yang dirancang untuk mempererat hubungan dan mengurangi distraksi digital." />
+  <meta property="og:title" content="Chewbain - Quality Time Redefined" />
+  <meta property="og:description" content="Kit aktivitas romantis, lucu, dan kreatif untuk pasangan modern." />
+  <meta property="og:image" content="https://placehold.co/600x400/D4A59A/fff?text=Chewbain" />
+  <meta property="og:type" content="website" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -41,15 +46,43 @@
     canvas {
       display: block;
     }
+    #mascot {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 80px;
+      height: 80px;
+      background: url('https://placehold.co/80x80/FDE4D0/D4A59A?text=🍪') center/cover no-repeat;
+      border-radius: 50%;
+      z-index: 50;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+    #mascot-bubble {
+      position: absolute;
+      bottom: 100%;
+      right: 0;
+      margin-bottom: 10px;
+      background: white;
+      padding: 8px 14px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+    }
+    #mascot:hover #mascot-bubble {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body class="text-gray-700">
-  <!-- Preloader -->
   <div id="preloader" class="fixed inset-0 z-[9999] bg-white flex items-center justify-center">
     <div class="text-2xl font-bold text-[var(--accent)] animate-pulse">Memuat Chewbain...</div>
   </div>
 
-  <!-- Hero Section -->
   <section id="hero" class="min-h-screen flex items-center justify-center bg-black relative overflow-hidden fade-in">
     <video class="absolute top-0 left-0 w-full h-full object-cover z-0" autoplay loop muted playsinline>
       <source src="https://videos.pexels.com/video-files/3209828/3209828-hd_1280_720_25fps.mp4" type="video/mp4" />
@@ -62,7 +95,6 @@
     </div>
   </section>
 
-  <!-- Solusi Section dengan 3D Box -->
   <section id="solusi" class="py-20 md:py-28 bg-white text-center fade-in">
     <div class="max-w-3xl mx-auto px-6">
       <h2 class="text-4xl md:text-5xl font-bold mb-4">Buka Kotak Kebahagiaan Anda</h2>
@@ -71,7 +103,6 @@
     <div class="w-full max-w-4xl h-[500px] mx-auto rounded-xl overflow-hidden" id="three-container"></div>
   </section>
 
-  <!-- Chart Section -->
   <section id="analisis" class="py-20 md:py-28 bg-gray-50 text-center fade-in">
     <div class="max-w-3xl mx-auto px-6">
       <h2 class="text-4xl md:text-5xl font-bold mb-4">Potensi Pasar</h2>
@@ -82,19 +113,32 @@
     </div>
   </section>
 
+  <section id="preorder" class="py-20 md:py-28 bg-white text-center fade-in">
+    <div class="max-w-2xl mx-auto px-6">
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">Siap untuk Terhubung Kembali?</h2>
+      <p class="text-lg mb-8">Daftarkan email kamu dan jadi yang pertama menerima batch pre-order Chewbain!</p>
+      <form class="bg-gray-100 rounded-lg p-6">
+        <input type="email" required placeholder="Alamat Email" class="w-full p-3 rounded-md border border-gray-300 mb-4 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]" />
+        <button type="submit" class="btn-primary w-full">Gabung Daftar Tunggu</button>
+      </form>
+    </div>
+  </section>
+
   <footer class="bg-white py-8 text-center text-gray-500">
     <p>&copy; 2025 Chewbain. Dirancang untuk menghubungkan kembali hati.</p>
   </footer>
 
+  <div id="mascot">
+    <div id="mascot-bubble">Hai! Perlu bantuan?</div>
+  </div>
+
   <script>
-    // Preloader
     window.addEventListener("load", () => {
       const preloader = document.getElementById("preloader");
       preloader.style.opacity = "0";
       setTimeout(() => preloader.style.display = "none", 1000);
     });
 
-    // GSAP Scroll Animation
     gsap.registerPlugin(ScrollTrigger);
     gsap.utils.toArray(".fade-in").forEach(el => {
       gsap.fromTo(el, { opacity: 0, y: 60 }, {
@@ -109,7 +153,6 @@
       });
     });
 
-    // Chart.js Initialization
     new Chart(document.getElementById('marketChart'), {
       type: 'doughnut',
       data: {
@@ -123,14 +166,11 @@
       options: {
         responsive: true,
         plugins: {
-          legend: {
-            position: 'bottom'
-          }
+          legend: { position: 'bottom' }
         }
       }
     });
 
-    // 3D Box
     const container = document.getElementById('three-container');
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(60, container.offsetWidth / container.offsetHeight, 0.1, 1000);
@@ -140,8 +180,8 @@
     renderer.setSize(container.offsetWidth, container.offsetHeight);
     container.appendChild(renderer.domElement);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-    scene.add(ambientLight);
+    const light = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(light);
 
     const material = new THREE.MeshStandardMaterial({ color: 0xD4A59A });
     const box = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2), material);
