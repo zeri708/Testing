@@ -1,152 +1,423 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chewbain - Cinematic Masterpiece</title>
-  <meta name="description" content="Chewbain - Kue cinta dengan permainan penuh kejutan di dalamnya">
-  <meta property="og:title" content="Chewbain - Web Interaktif Cinematic">
-  <meta property="og:description" content="Landing page interaktif penuh cinta, animasi, dan 3D.">
-  <meta property="og:image" content="https://i.imgur.com/lQxONqS.png">
-  <meta property="og:type" content="website">
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet" />
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-    body { font-family: 'Outfit', sans-serif; background: #0e0e0e; color: white; overflow-x: hidden; }
-    section { min-height: 100vh; padding: 6rem 2rem; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-    h1, h2, h3, p { margin-bottom: 1rem; }
-    .preloader {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: #000; color: #fff; display: flex; align-items: center; justify-content: center;
-      z-index: 9999; font-size: 2rem;
-    }
-    .hero {
-      background: url('https://images.unsplash.com/photo-1616628182502-8263e1c7c8b1?auto=format&fit=crop&w=1800&q=80') no-repeat center center/cover;
-      position: relative; color: white; height: 100vh;
-      display: flex; align-items: center; justify-content: center; flex-direction: column;
-    }
-    .hero::after {
-      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5); z-index: 1;
-    }
-    .hero-content {
-      z-index: 2; max-width: 90%;
-    }
-    canvas { display: block; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 0; }
-    .section-light { background-color: #f9f9f9; color: #111; }
-    .maskot { margin-top: 2rem; text-align: center; }
-    .bubble {
-      background: white; color: #111; display: inline-block; padding: 1rem 1.2rem;
-      border-radius: 1rem; margin-top: 1rem; font-weight: bold; max-width: 250px;
-    }
-    footer { background: #111; color: #aaa; padding: 2rem; text-align: center; }
-    .cta-button {
-      background: #FF99AA; color: white; padding: 1rem 2rem; border-radius: 2rem; text-decoration: none; font-weight: bold; transition: 0.3s;
-    }
-    .cta-button:hover { background: #F97C9A; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chewbain - Cetak Biru Interaktif</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap');
+
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #FFE66D; 
+            --dark-bg: #101010;
+            --light-text: #F0F0F0;
+            --grey-text: #A0A0A0;
+            --font-main: 'Montserrat', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--light-text);
+            background-color: var(--dark-bg);
+            overflow-x: hidden;
+        }
+
+        #webgl-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            outline: none;
+            z-index: 1;
+        }
+
+       .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            transition: background-color 0.3s ease;
+        }
+        
+       .main-header.scrolled {
+            background-color: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+       .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--light-text);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        
+       .logo span {
+            color: var(--primary-color);
+        }
+
+       .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            background-color: var(--primary-color);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid var(--primary-color);
+            transition: all 0.4s ease;
+        }
+
+       .btn:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+        }
+
+       .scroll-content {
+            position: relative;
+            z-index: 2;
+            color: var(--light-text);
+       }
+       
+       #hero-section, #final-section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+       }
+
+       .chapter {
+            min-height: 100vh;
+            width: 100%;
+            padding: 5rem 3rem;
+            display: flex;
+            align-items: center;
+            position: relative;
+       }
+       
+       .text-content {
+           width: 45%;
+           padding: 2rem;
+           z-index: 10;
+       }
+
+       .chapter:nth-child(even) .text-content {
+           margin-left: 55%;
+       }
+       
+       .chapter:nth-child(odd) .text-content {
+           margin-right: 55%;
+       }
+
+       .text-content h3 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+       }
+       
+       .text-content p {
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            line-height: 1.8;
+            color: var(--grey-text);
+       }
+       .text-content .sub-point {
+            font-weight: bold;
+            color: var(--light-text);
+            margin-top: 1rem;
+            display: block;
+       }
+
+        #hero-section h1, #final-section h2 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.1;
+            max-width: 1000px;
+        }
+
+        #hero-section p, #final-section p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--grey-text);
+            max-width: 600px;
+            margin-top: 1.5rem;
+            line-height: 1.8;
+        }
+        
+       .footer {
+            padding: 5rem 3rem 2rem;
+            background-color: #000;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+       }
+        
+       .footer p {
+            color: var(--grey-text);
+            font-size: 0.9rem;
+            margin: 0 auto;
+       }
+
+    </style>
 </head>
 <body>
-  <div class="preloader" id="preloader">Memuat Cinta Chewbain...</div>
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Selamat datang di Chewbain</h1>
-      <p>Kue cinta dengan permainan romantis di dalamnya.</p>
+    <header class="main-header" id="main-header">
+        <a href="#" class="logo">CHEW<span>BAIN</span></a>
+        <a href="#" class="btn">Pesan Sekarang</a>
+    </header>
+
+    <canvas id="webgl-canvas"></canvas>
+
+    <div class="scroll-content">
+        <section id="hero-section">
+             <h1>Cetak Biru Interaktif Chewbain</h1>
+             <p>Gulir untuk memulai perjalanan melalui strategi bisnis kami.</p>
+        </section>
+
+        <!-- Each chapter div acts as a trigger for a specific scene -->
+        <section id="chapter-1" class="chapter">
+            <div class="text-content">
+                <h3>1. Ringkasan Eksekutif</h3>
+                <p>Chewbain adalah solusi inovatif berupa *Do-It-Together Kit* yang dirancang untuk melawan fenomena *phubbing*, mengubah waktu berkualitas menjadi pengalaman yang berdampak positif bagi pasangan dan masyarakat.</p>
+            </div>
+        </section>
+        <section id="chapter-2" class="chapter">
+            <div class="text-content">
+                 <h3>2. Identifikasi Masalah</h3>
+                <p>Distraksi digital adalah masalah nyata. **8 dari 10 pasangan** mengakui gawai merusak waktu berkualitas mereka. Ini menciptakan kebutuhan pasar yang jelas untuk solusi interaksi bebas gawai.</p>
+                <span class="sub-point">Target Persona: Pasangan Gen-Z (18-25 thn) di area urban.</span>
+            </div>
+        </section>
+        <section id="chapter-3" class="chapter">
+             <div class="text-content">
+                <h3>3. Konsep Inovasi Produk</h3>
+                <p>Kami menawarkan sebuah *pengalaman terkurasi*, bukan sekadar produk. Sebuah perjalanan 3-babak dari kreativitas, komunikasi, hingga kolaborasi yang secara aktif membangun kembali koneksi.</p>
+                <span class="sub-point">USP: Pengalaman terpandu dengan dampak sosial & lingkungan.</span>
+            </div>
+        </section>
+        <section id="chapter-4" class="chapter">
+             <div class="text-content">
+                <h3>4. Minimum Viable Product</h3>
+                <p>MVP kami adalah kit fisik yang mencakup semua fitur inti: cookies untuk dihias, kartu permainan yang memicu percakapan, dan *paper craft* untuk kolaborasi.</p>
+            </div>
+        </section>
+        <section id="chapter-5" class="chapter">
+             <div class="text-content">
+                <h3>5. Komponen Digital Pendukung</h3>
+                <p>Situs interaktif ini adalah komponen digital utama kami, berfungsi sebagai landing page, demonstrasi produk, dan corong pemesanan untuk mengubah minat menjadi tindakan.</p>
+            </div>
+        </section>
+        <section id="chapter-6" class="chapter">
+             <div class="text-content">
+                 <h3>6. Pemetaan Kompetitor</h3>
+                <p>Tidak seperti kompetitor yang menjual aktivitas tunggal, Chewbain diposisikan secara unik sebagai **pengalaman relasional premium** dengan misi sosial.</p>
+            </div>
+        </section>
+        <section id="chapter-7" class="chapter">
+            <div class="text-content">
+                <h3>7. Strategi Monetisasi</h3>
+                <p>Pendapatan utama berasal dari penjualan langsung (D2C) melalui sistem pra-pemesanan. Dengan harga **Rp 165.000**, 90% responden survei menyatakan ini adalah nilai yang sepadan.</p>
+            </div>
+        </section>
+
+        <section id="final-section">
+            <h2>Masa Depan Koneksi Ada di Tangan Anda</h2>
+            <p>Anda telah melihat masalah, solusi, dan potensi. Sekarang, jadilah bagian dari gerakan untuk menciptakan hubungan yang lebih otentik.</p>
+            <a href="#" class="btn" style="margin-top: 2rem;">Amankan Kit Anda Sekarang</a>
+        </section>
+        
+        <footer class="footer">
+            <p>&copy; 2025 Chewbain. Dibuat dengan ❤️ untuk koneksi yang lebih baik.</p>
+        </footer>
     </div>
-  </section>
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js",
+                "gsap": "https://unpkg.com/gsap@3.12.5/index.js",
+                "gsap/ScrollTrigger": "https://unpkg.com/gsap@3.12.5/ScrollTrigger.js"
+            }
+        }
+    </script>
 
-  <section style="background:#1a1a1a;">
-    <h2>Masalah yang Kami Temukan</h2>
-    <p>Hubungan monoton, tanpa kejutan dan tanpa ekspresi spontan.</p>
-  </section>
+    <script type="module">
+        import * as THREE from 'three';
+        import gsap from 'gsap';
+        import ScrollTrigger from 'gsap/ScrollTrigger';
 
-  <section style="background:#111;">
-    <h2>Solusi dari Chewbain</h2>
-    <p>Cookie manis + permainan truth or dare untuk membangkitkan chemistry pasangan.</p>
-  </section>
+        gsap.registerPlugin(ScrollTrigger);
 
-  <section style="background:#1a1a1a;">
-    <h2>Kenapa Ini Penting?</h2>
-    <p>Karena cinta butuh ruang untuk bermain. Chewbain menyediakannya.</p>
-  </section>
+        // --- Basic Setup ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.querySelector('#webgl-canvas'),
+            antialias: true,
+            alpha: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        const ambientLight = new THREE.AmbientLight(0xffffff, 2.5);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 3);
+        directionalLight.position.set(5, 10, 7.5);
+        scene.add(directionalLight);
+        camera.position.z = 5;
 
-  <section style="background: #111;">
-    <h2>Eksplorasi Hadiah Cinta</h2>
-    <canvas id="chewbain3d"></canvas>
-    <p style="z-index:10; position:relative;">Putar & lihat. Hadiah cinta dalam bentuk 3D.</p>
-  </section>
+        // --- Create a single group to hold the currently active object ---
+        const activeObjectGroup = new THREE.Group();
+        scene.add(activeObjectGroup);
 
-  <section style="background: #1a1a1a;">
-    <h2>Potensi Pasar Chewbain</h2>
-    <canvas id="marketChart" width="300" height="300"></canvas>
-  </section>
+        // --- Create all 3D models ---
+        const chapterModels = [];
+        
+        // Model 1: Executive Summary Box
+        const boxMaterial = new THREE.MeshStandardMaterial({ color: 0xFF6B6B, roughness: 0.5 });
+        const summaryBox = new THREE.Mesh(new THREE.BoxGeometry(2.1, 2.1, 2.1), boxMaterial);
+        chapterModels.push(summaryBox);
+        
+        // Model 2: The Problem (Phone with cracked heart)
+        const problemGroup = new THREE.Group();
+        const phone = new THREE.Mesh(new THREE.BoxGeometry(1.5, 3, 0.15), new THREE.MeshStandardMaterial({ color: '#2C2C2C' }));
+        const heartShape = new THREE.Shape();
+        heartShape.moveTo(0.25, 0.25);
+        heartShape.bezierCurveTo(0.25, 0.25, 0.2, 0, 0, 0);
+        heartShape.bezierCurveTo(-0.3, 0, -0.3, 0.35, -0.3, 0.35);
+        heartShape.bezierCurveTo(-0.3, 0.55, -0.1, 0.77, 0.25, 0.95);
+        heartShape.bezierCurveTo(0.6, 0.77, 0.8, 0.55, 0.8, 0.35);
+        heartShape.bezierCurveTo(0.8, 0.35, 0.8, 0, 0.5, 0);
+        heartShape.bezierCurveTo(0.35, 0, 0.25, 0.25, 0.25, 0.25);
+        const heart = new THREE.Mesh(new THREE.ShapeGeometry(heartShape), new THREE.MeshBasicMaterial({ color: 0xFF6B6B, side: THREE.DoubleSide }));
+        heart.position.set(-0.25, -0.5, 0.1);
+        const crack = new THREE.Mesh(new THREE.PlaneGeometry(0.1, 0.8), new THREE.MeshBasicMaterial({ color: '#1A1A1A' }));
+        crack.position.z = 0.11;
+        crack.rotation.z = 0.2;
+        phone.add(heart, crack);
+        problemGroup.add(phone);
+        chapterModels.push(problemGroup);
 
-  <section class="maskot" style="background:#DAEFF2; color:#111;">
-    <h2>Maskot Kami</h2>
-    <img src="https://i.imgur.com/lQxONqS.png" alt="maskot" width="120" />
-    <div class="bubble">Apakah kamu siap buat kenangan manis?</div>
-  </section>
+        // Model 3: The Solution (Unboxed kit)
+        const solutionKit = new THREE.Group();
+        const boxBase = new THREE.Mesh(new THREE.BoxGeometry(2, 0.5, 2), boxMaterial);
+        const boxLid = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.5, 2.1), boxMaterial);
+        boxLid.position.set(1.5, 1, 0);
+        boxLid.rotation.set(0, 0, -0.5);
+        const cookie = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.1, 32), new THREE.MeshStandardMaterial({ color: 0x8B4513 }));
+        cookie.position.set(-0.5, 0.6, 0.5);
+        const cards = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.9, 0.2), new THREE.MeshStandardMaterial({ color: '#5555ff' }));
+        cards.position.set(0.5, 0.6, 0);
+        cards.rotation.set(1.5, 0, 0);
+        const papercraft = new THREE.Mesh(new THREE.IcosahedronGeometry(0.4, 0), new THREE.MeshStandardMaterial({ color: 0xFFE66D }));
+        papercraft.position.set(-0.5, 0.6, -0.5);
+        solutionKit.add(boxBase, boxLid, cookie, cards, papercraft);
+        chapterModels.push(solutionKit);
 
-  <section class="section-light">
-    <h2>Pre-Order Sekarang</h2>
-    <p>Kado yang lucu, unik, dan penuh kejutan. Untuk pasanganmu tercinta.</p>
-    <a href="#order" class="cta-button">Pesan Sekarang</a>
-  </section>
+        // Model 4: MVP Items
+        const mvpItems = new THREE.Group();
+        const mvpCookie = cookie.clone();
+        const mvpCards = cards.clone();
+        const mvpPapercraft = papercraft.clone();
+        mvpCookie.position.set(-1.5, 0, 0);
+        mvpCards.position.set(0, 0, 0);
+        mvpPapercraft.position.set(1.5, 0, 0);
+        mvpItems.add(mvpCookie, mvpCards, mvpPapercraft);
+        chapterModels.push(mvpItems);
 
-  <footer>
-    <p>© 2025 Chewbain. Dibuat dengan cinta.</p>
-  </footer>
+        // Model 5: Digital Component
+        const browser = new THREE.Mesh(new THREE.BoxGeometry(3, 2, 0.1), new THREE.MeshStandardMaterial({color: 0x222222}));
+        chapterModels.push(browser);
+        
+        // Model 6: Competitor Chart
+        const competitorChart = new THREE.Group();
+        const chewbainBar = new THREE.Mesh(new THREE.BoxGeometry(0.5, 3, 0.5), new THREE.MeshStandardMaterial({color: 0xFF6B6B}));
+        chewbainBar.position.set(-1.5, 1.5, 0);
+        const competitorBar = new THREE.Mesh(new THREE.BoxGeometry(0.5, 1.5, 0.5), new THREE.MeshStandardMaterial({color: 0x555555}));
+        competitorBar.position.set(0, 0.75, 0);
+        competitorChart.add(chewbainBar, competitorBar);
+        chapterModels.push(competitorChart);
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-  <script type="module">
-    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js';
-    const canvas = document.getElementById('chewbain3d');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    camera.position.z = 3;
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    const ambient = new THREE.AmbientLight(0xffffff, 0.6);
-    const light = new THREE.PointLight(0xffffff, 1);
-    light.position.set(5,5,5);
-    scene.add(ambient, light);
-    const geometry = new THREE.TorusKnotGeometry(0.8, 0.3, 100, 16);
-    const material = new THREE.MeshStandardMaterial({ color: '#FF99AA', metalness: 0.5, roughness: 0.3 });
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-    const controls = new OrbitControls(camera, renderer.domElement);
-    function animate() {
-      requestAnimationFrame(animate);
-      mesh.rotation.y += 0.01;
-      controls.update();
-      renderer.render(scene, camera);
-    }
-    animate();
-  </script>
-  <script>
-    window.addEventListener("load", () => {
-      document.getElementById("preloader").style.display = "none";
-    });
-    new Chart(document.getElementById("marketChart").getContext("2d"), {
-      type: "doughnut",
-      data: {
-        labels: ["TAM", "SAM", "SOM"],
-        datasets: [{
-          data: [100, 50, 20],
-          backgroundColor: ["#FF99AA", "#F9F160", "#DAEFF2"]
-        }]
-      },
-      options: {
-        plugins: { legend: { position: "bottom", labels: { color: "#111" } } }
-      }
-    });
-  </script>
+        // Model 7: Monetization Icon
+        const cart = new THREE.Group();
+        const cartBase = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1, 1), new THREE.MeshStandardMaterial({color: '#cccccc'}));
+        const cartHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 1.5), new THREE.MeshStandardMaterial({color: '#cccccc'}));
+        cartHandle.position.set(-0.8, 0.8, 0);
+        cartHandle.rotation.z = Math.PI / 2;
+        cart.add(cartBase, cartHandle);
+        chapterModels.push(cart);
+
+
+        // --- Animate each chapter ---
+        const chapterSections = document.querySelectorAll(".chapter");
+        chapterSections.forEach((section, i) => {
+            const model = chapterModels[i];
+            
+            // Show the model when its chapter is in view
+            ScrollTrigger.create({
+                trigger: section,
+                start: "top center",
+                end: "bottom center",
+                onToggle: self => {
+                    if (self.isActive) {
+                        // Clear the group and add the new model
+                        activeObjectGroup.clear();
+                        activeObjectGroup.add(model);
+                        // Animate its entrance
+                        gsap.fromTo(model.scale, {x: 0.5, y: 0.5, z: 0.5}, {x: 1, y: 1, z: 1, duration: 0.5, ease: "power2.out"});
+                    }
+                },
+            });
+
+            // Animate rotation while scrolling through the chapter
+            gsap.to(model.rotation, {
+                y: Math.PI * 0.5,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true,
+                }
+            });
+        });
+
+
+        // --- Render Loop & Resize Handling ---
+        function animate(time) {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+    </script>
 </body>
 </html>
